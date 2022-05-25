@@ -14,14 +14,16 @@ Clone o faça download do projeto. É recomendado o uso de [GitBash](https://git
 
     git clone https://github.com/allmomoro088/StockProject.git
 
-**Visual Studio**
+**Visual Studio**:
+
 Abra o projeto no Visual Studio, vá no arquivo **appsettings.json** e ajuste as informações de acordo com o ambiente, definindo os seguintes valores:
 
 **ConnectionStrings**:
 - stocksdb: `YOUR_SQL_SERVER_AND_INSTANCE` para o local do servidor MySQL e a respectiva instância
 - stocksdb: `YOUR_SQL_USER` para o nome de usuário a ser utilizado para autênticação
 - stocksdb:`YOUR_SQL_PASSWORD` para a senha do respectivo usuário
-**API**
+
+**API**:
 - SecretToken: `YOUR_SECRET` para o secret token obtido no site da [IEXCloud](https://iexcloud.io/)
 
 **DBContext Migration**
