@@ -1,0 +1,64 @@
+﻿@{
+	ViewData["Title"] = "Result";
+}
+@model ReadStockDto
+
+@{
+	if (Model != null)
+	{
+		<h3 id="symbol" class="mx-2">@Model.Symbol</h3>
+		<div class="card">
+			<div class="mx-2">
+				<strong>Company Name: </strong><span>@Model.CompanyName</span>
+			</div>
+			<div class="mx-2">
+				<strong>Latest Price: </strong><span id="latestPrice">@Model.LatestPrice</span><span> </span><small id="liveSmall" class="text-danger">LIVE</small>
+			</div>
+			<div class="mx-2">
+				<strong>Country: </strong><span>@Model.Country</span>
+			</div>
+			<div class="mx-2">
+				<strong>Description: </strong><span>@Model.Description</span>
+			</div>
+			<div class="mx-2">
+				<strong>WebSite: </strong><a href="@Model.WebSite">@Model.WebSite</a>
+			</div>
+		</div>
+	}
+	else
+	{
+		<div class="w-100 d-flex justify-content-center">
+			<span>No stock found. <a asp-action="Search">Try again</a></span>
+		</div>
+	}
+}
+@section Scripts
+{
+	@{
+		if (Model != null)
+			{
+				<script>
+					$(function () {
+						let symbol = $("#symbol").text();
+						let latestPriceElement = $("#latestPrice");
+						let liveSmall = $("#liveSmall");
+						setInterval(function () {
+							$.ajax({
+								global: true,
+								url: `/api/live/${symbol}`,
+								type: "GET",
+								success: function (res) {
+									latestPriceElement.text(res);
+									liveSmall.text(" LIVE");
+								},
+								error: function () {
+									liveSmall.text("");
+								}
+							});
+
+						}, 5000);
+					})
+				</script>
+			}
+	}
+}

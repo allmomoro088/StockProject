@@ -1,0 +1,28 @@
+﻿@{
+	ViewData["Title"] = "Search";
+}
+@model StockInfo
+
+@{
+	var searchToken = Guid.NewGuid().ToString();
+}
+<div class="form-group">
+	<label class="control-label" for="">Stock symbol</label>
+	<input id="inpSymbol" type="text" class="form-control" placeholder="AAPL" />
+</div>
+<div class="form-group">
+	<a id="btnSearch" class="btn btn-success" asp-action="Result" asp-route-symbol="@searchToken">
+		Search
+	</a>
+</div>
+
+<script>
+	window.onload = function(){
+		var searchLink = document.getElementById("btnSearch");
+		var originalHref = searchLink.href;
+		searchLink.onclick = function(e){
+			var searchTextElement = document.getElementById("inpSymbol");
+			e.target.href = originalHref.replace("@searchToken", searchTextElement.value);
+		};
+	}
+</script>
