@@ -12,7 +12,14 @@
 				<strong>Company Name: </strong><span>@Model.CompanyName</span>
 			</div>
 			<div class="mx-2">
-				<strong>Latest Price: </strong><span id="latestPrice">@Model.LatestPrice</span><span> </span><small id="liveSmall" class="text-danger">LIVE</small>
+				<strong>Latest Price: </strong><span id="latestPrice">@Model.LatestPrice</span>
+				<span> </span>
+				<small id="changePercent">@(Model.ChangePercent * 100)%</small>
+				<span> </span>
+				<small id="liveSmall" class="text-danger">LIVE</small>
+			</div>
+			<div class="mx-2">
+				<strong>Open Price: </strong><span id="openPrice">@Model.IEXOpen</span>
 			</div>
 			<div class="mx-2">
 				<strong>Country: </strong><span>@Model.Country</span>
@@ -42,13 +49,25 @@
 						let symbol = $("#symbol").text();
 						let latestPriceElement = $("#latestPrice");
 						let liveSmall = $("#liveSmall");
+						let changePercentSmall = $("#changePercent");
 						setInterval(function () {
 							$.ajax({
 								global: true,
 								url: `/api/live/${symbol}`,
 								type: "GET",
 								success: function (res) {
-									latestPriceElement.text(res);
+									latestPriceElement.text(res.latestPrice);
+									changePercentSmall.text(`${res.changePercent * 100}%`)
+									if (res.latestPrice > res.iexOpen) {
+										if (!changePercentSmall.hasClass("text-success")) {
+											changePercentSmall.addClass("text-success").removeClass("text-danger");
+										}
+									}
+									else {
+										if (!changePercentSmall.hasClass("text-danger")) {
+											changePercentSmall.addClass("text-danger").removeClass("text-success");
+										}
+									}
 									liveSmall.text(" LIVE");
 								},
 								error: function () {

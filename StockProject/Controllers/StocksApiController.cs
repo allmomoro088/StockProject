@@ -21,12 +21,12 @@ namespace StockProject.Controllers
 		}
 
 		[HttpGet("{symbol}")]
-		public IActionResult GetLatestPrice(string symbol)
+		public IActionResult GetStock(string symbol)
 		{
 			try
 			{
 				var dto = _stockService.GetStock(symbol);
-				return Ok(dto.LatestPrice);
+				return Ok(dto);
 			}
 			catch (UnknownSymbolException)
 			{

@@ -13,5 +13,7 @@ namespace StockProject.Data.Dtos
 		public string Description { get; set; }
 		public string WebSite { get; set; }
 		public string Country { get; set; }
+		public double IEXOpen { get; set; }
+		public double ChangePercent { get; set; }
 	}
 }

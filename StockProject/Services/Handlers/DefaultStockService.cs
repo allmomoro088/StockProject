@@ -33,7 +33,11 @@ namespace StockProject.Services.Handlers
 			{
 				var stockInfo = _requestService.GetStockInfo(symbol);
 				ReadStockDto dto = _mapper.Map<ReadStockDto>(stockInfo);
-				dto.LatestPrice = _requestService.GetStockLatestPrice(symbol);
+				var quote = _requestService.GetStockQuote(symbol);
+
+				dto.ChangePercent = quote.ChangePercent;
+				dto.IEXOpen = quote.IEXOpen;
+				dto.LatestPrice = quote.LatestPrice;
 
 				stock = _mapper.Map<Stock>(dto);
 

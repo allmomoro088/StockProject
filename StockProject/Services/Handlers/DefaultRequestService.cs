@@ -30,13 +30,13 @@ namespace StockProject.Services.Handlers
 			return JsonConvert.DeserializeObject<StockInfo>(response.Content, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Ignore });
 		}
 
-		public double GetStockLatestPrice(string symbol)
+		public StockQuote GetStockQuote(string symbol)
 		{
 			var request = new RestRequest($"/stock/{symbol}/quote", Method.GET);
 			request.AddParameter("token", _settings.SecretToken);
 
 			IRestResponse response = Execute(request);
-			return (double)JObject.Parse(response.Content).SelectToken("latestPrice");
+			return JsonConvert.DeserializeObject<StockQuote>(response.Content, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Ignore });
 		}
 
 		private IRestResponse Execute(RestRequest request)

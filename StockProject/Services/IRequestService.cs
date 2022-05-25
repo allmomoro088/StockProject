@@ -8,7 +8,7 @@ namespace StockProject.Services
 {
 	public interface IRequestService
 	{
-		double GetStockLatestPrice(string symbol);
+		StockQuote GetStockQuote(string symbol);
 		StockInfo GetStockInfo(string symbol);
 	}
 }

@@ -23,5 +23,9 @@ namespace StockProject.Models
 		public double LatestPrice { get; set; }
 		[Required]
 		public DateTime? LastUpdate { get; set; }
+		[Required]
+		public double IEXOpen { get; set; }
+		[Required]
+		public double ChangePercent { get; set; }
 	}
 }

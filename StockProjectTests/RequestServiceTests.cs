@@ -79,10 +79,10 @@ namespace StockProjectTests
 		public void GetStockLatestPriceCorrect(string symbol)
 		{
 			//Act
-			var price = _requestService.GetStockLatestPrice(symbol);
+			var quote = _requestService.GetStockQuote(symbol);
 
 			//Assert
-			Assert.True(price > 0.0);
+			Assert.True(quote.LatestPrice > 0.0);
 		}
 
 		[Theory]
@@ -95,7 +95,7 @@ namespace StockProjectTests
 		public void GetStockNonExistentSymbolLatestPrice(string symbol)
 		{
 			//Assert
-			Assert.Throws<UnknownSymbolException>(() => _requestService.GetStockLatestPrice(symbol));
+			Assert.Throws<UnknownSymbolException>(() => _requestService.GetStockQuote(symbol));
 		}
 	}
 }
