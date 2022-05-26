@@ -16,8 +16,17 @@ namespace StockProject.Data.Dao
 			_context = context;
 		}
 
+		public Stock GetStockBySymbol(string symbol)
+		{
+			if (symbol == null) throw new ArgumentNullException("symbol", "Symbol cannot be null");
+
+			return _context.Stocks.AsNoTracking().FirstOrDefault(x => x.Symbol == symbol);
+		}
+
 		public void UpdateDatabase(Stock stock)
 		{
+			if (stock == null) throw new ArgumentNullException("stock", "Stock cannot be null");
+
 			stock.LastUpdate = DateTime.Now;
 			if (_context.Stocks.AsNoTracking().FirstOrDefault(x => x.Symbol == stock.Symbol) == null)
 			{

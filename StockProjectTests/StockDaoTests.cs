@@ -72,5 +72,52 @@ namespace StockProjectTests
 				_context.Remove(stock);
 			}
 		}
+
+		[Fact]
+		public void UpdateDatabaseNullStock()
+		{
+			//Arrange
+			Stock stock = null;
+
+			//Assert
+			Assert.Throws<ArgumentNullException>(() => _stockDao.UpdateDatabase(stock));
+		}
+
+		[Theory]
+		[InlineData("aapl")]
+		[InlineData("twtr")]
+		[InlineData("fb")]
+		public void GetStocksBySymbolCorrect(string symbol)
+		{
+			//Act
+			var stock = _stockDao.GetStockBySymbol(symbol);
+
+			//Assert
+			Assert.NotNull(stock);
+		}
+
+		[Theory]
+		[InlineData("")]
+		[InlineData(" ")]
+		[InlineData("somethingthatdoesnotexist")]
+		[InlineData("2")]
+		[InlineData("-1")]
+		public void GetStocksBySymbolNonExistent(string symbol)
+		{
+			//Act
+			var stock = _stockDao.GetStockBySymbol(symbol);
+
+			//Assert
+			Assert.Null(stock);
+		}
+		[Fact]
+		public void GetStocksBySymbolNull()
+		{
+			//Act
+			string symbol = null;
+
+			//Assert
+			Assert.Throws<ArgumentNullException>(() => _stockDao.GetStockBySymbol(symbol));
+		}
 	}
 }

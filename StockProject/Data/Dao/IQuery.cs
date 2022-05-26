@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace StockProject.Data.Dao
 {
-	public interface IStockDao : IQuery, ICommand
+	public interface IQuery
 	{
+		Stock GetStockBySymbol(string symbol);
 	}
 }
