@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using StockProject.Exceptions;
@@ -36,7 +37,12 @@ namespace StockProject.Services.Handlers
 			request.AddParameter("token", _settings.SecretToken);
 
 			IRestResponse response = Execute(request);
-			return SerializeQuote(response.Content);
+			var serializerSettings = new JsonSerializerSettings 
+			{
+				MissingMemberHandling = MissingMemberHandling.Ignore,
+				Converters = new List<JsonConverter> { new MicrosecondEpochConverter() }
+			};
+			return JsonConvert.DeserializeObject<StockQuote>(response.Content, serializerSettings);
 		}
 
 		private IRestResponse Execute(RestRequest request)
@@ -45,19 +51,6 @@ namespace StockProject.Services.Handlers
 			if (response.StatusCode == System.Net.HttpStatusCode.NotFound) throw new UnknownSymbolException();
 
 			return response;
-		}
-
-		private StockQuote SerializeQuote(string json)
-		{
-			JObject jQuote = JObject.Parse(json);
-			StockQuote quote = new StockQuote
-			{
-				ChangePercent = (double)jQuote.SelectToken("changePercent"),
-				IEXOpen = (double)jQuote.SelectToken("iexOpen"),
-				LatestPrice = (double)jQuote.SelectToken("latestPrice"),
-				LatestUpdate = (new DateTime(1970,1,1) + TimeSpan.FromMilliseconds((double)jQuote.SelectToken("latestUpdate"))).ToLocalTime()
-			};
-			return quote;
 		}
 	}
 }
