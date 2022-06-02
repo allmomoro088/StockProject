@@ -33,7 +33,7 @@ namespace StockProject.Controllers
 			{
 				return View(null);
 			}
-			catch (ArgumentNullException)
+			catch (ArgumentNullException ex)
 			{
 				return View(null);
 			}

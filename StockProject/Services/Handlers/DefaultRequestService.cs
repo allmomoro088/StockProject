@@ -36,7 +36,7 @@ namespace StockProject.Services.Handlers
 			request.AddParameter("token", _settings.SecretToken);
 
 			IRestResponse response = Execute(request);
-			return JsonConvert.DeserializeObject<StockQuote>(response.Content, new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Ignore });
+			return SerializeQuote(response.Content);
 		}
 
 		private IRestResponse Execute(RestRequest request)
@@ -45,6 +45,19 @@ namespace StockProject.Services.Handlers
 			if (response.StatusCode == System.Net.HttpStatusCode.NotFound) throw new UnknownSymbolException();
 
 			return response;
+		}
+
+		private StockQuote SerializeQuote(string json)
+		{
+			JObject jQuote = JObject.Parse(json);
+			StockQuote quote = new StockQuote
+			{
+				ChangePercent = (double)jQuote.SelectToken("changePercent"),
+				IEXOpen = (double)jQuote.SelectToken("iexOpen"),
+				LatestPrice = (double)jQuote.SelectToken("latestPrice"),
+				LatestUpdate = (new DateTime(1970,1,1) + TimeSpan.FromMilliseconds((double)jQuote.SelectToken("latestUpdate"))).ToLocalTime()
+			};
+			return quote;
 		}
 	}
 }
